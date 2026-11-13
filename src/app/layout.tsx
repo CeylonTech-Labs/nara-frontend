@@ -29,12 +29,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: "NARA | The Beauty of Our Heritage", template: "%s | NARA" },
   description: "Discover NARA, a Sri Lankan heritage beauty brand inspired by botanical rituals and timeless care.",
+  twitter: { card: "summary_large_image", title: "NARA | The Beauty of Our Heritage", description: "Explore NARA?s Sri Lankan heritage-inspired hair oils.", images: ["/images/products/botanical-label.webp"] },
   openGraph: {
     type: "website",
     siteName: "NARA",
     title: "NARA | The Beauty of Our Heritage",
     description: "Sri Lankan heritage beauty, thoughtfully reimagined.",
-    images: ["/images/brand/nara-logo.jpeg"],
+    images: [{ url: "/images/products/botanical-label.webp", alt: "NARA Premium Botanical Hair Oil ? supplied product artwork" }],
   },
 };
 

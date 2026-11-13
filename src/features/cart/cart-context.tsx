@@ -3,16 +3,19 @@
 import { createContext, startTransition, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { getProduct } from "@/data/products";
-import type { Product } from "@/types/catalog";
+import { isPurchasable, type Product } from "@/types/catalog";
 
 type CartLine = { slug: string; quantity: number };
 type CartContextValue = {
   items: CartLine[];
   count: number;
   canCheckout: boolean;
+  /** False until the saved bag has been restored from this browser. */
+  hydrated: boolean;
   add: (product: Product) => void;
   remove: (slug: string) => void;
   setQuantity: (slug: string, quantity: number) => void;
+  clear: () => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -29,7 +32,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (Array.isArray(stored)) {
         restoredItems = stored.filter((line): line is CartLine =>
           typeof line?.slug === "string" && Number.isInteger(line?.quantity) && line.quantity > 0 &&
-          getProduct(line.slug)?.status === "available",
+          Boolean(getProduct(line.slug) && isPurchasable(getProduct(line.slug)!)),
         );
       }
     } catch {
@@ -46,7 +49,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [hydrated, items]);
 
   const add = useCallback((product: Product) => {
-    if (product.status !== "available") return;
+    if (!isPurchasable(product)) return;
     setItems((current) => current.some((line) => line.slug === product.slug)
       ? current.map((line) => line.slug === product.slug ? { ...line, quantity: line.quantity + 1 } : line)
       : [...current, { slug: product.slug, quantity: 1 }]);
@@ -57,16 +60,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (!Number.isInteger(quantity) || quantity < 1) return remove(slug);
     setItems((current) => current.map((line) => line.slug === slug ? { ...line, quantity } : line));
   }, [remove]);
+  const clear = useCallback(() => setItems([]), []);
 
   const value = useMemo(() => ({
     items,
     count: items.reduce((total, line) => total + line.quantity, 0),
     canCheckout: items.length > 0 && items.every((line) => {
       const product = getProduct(line.slug);
-      return product?.status === "available" && product.priceLkr !== null && product.volume !== null && product.ingredients !== null;
+      return product !== undefined && isPurchasable(product) && product.priceLkr !== null && product.volume !== null && product.ingredients !== null;
     }),
-    add, remove, setQuantity,
-  }), [items, add, remove, setQuantity]);
+    hydrated,
+    add, remove, setQuantity, clear,
+  }), [items, hydrated, add, remove, setQuantity, clear]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

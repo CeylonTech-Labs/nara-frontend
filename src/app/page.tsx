@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowDown, ArrowRight, Check, MessageCircle } from "lucide-react";
-import { products } from "@/data/products";
+import { ArrowRight, MessageCircle, Package, Banknote } from "lucide-react";
+import { HeritageHero } from "@/components/home/heritage-hero";
 import { FeaturedProduct } from "@/components/product/featured-product";
 import { CategoryCard } from "@/components/shared/category-card";
 import { Reveal } from "@/components/shared/reveal";
@@ -14,30 +14,14 @@ import { canonicalMetadata } from "@/lib/config/site";
 export const metadata: Metadata = { ...canonicalMetadata("/") };
 
 export default function Home() {
-  const launchProduct = products[0];
   return <>
-    <section className="hero">
-      <div className="hero-image"><Image src={launchProduct.image} alt={launchProduct.imageAlt} fill priority sizes="100vw" /></div>
-      <div className="hero-shade" />
-      <div className="container hero-content"><span className="hero-kicker"><span /> Sri Lankan heritage beauty</span><h1>The beauty<br />of our <em>heritage.</em></h1><p>A considered return to the rituals, botanicals and quiet care that have always been part of us.</p><div className="hero-actions"><Link className="button button-light" href="/products/hair-oil">Discover NARA Hair Oil <ArrowRight size={15} /></Link><Link className="hero-text-link" href="/about">The NARA story</Link></div></div>
-      <div className="hero-caption"><span>01 / A new chapter</span><span>Inspired by the island</span><ArrowDown size={16} /></div>
-    </section>
-
-    <section className="intro section container">
-      <Reveal><div className="intro-mark"><span className="ornament">✳</span><span className="eyebrow">Beauty, remembered</span><h2>The Beauty of<br /><em>Our Heritage</em></h2><p>Some rituals are more than routine. They are a way of remembering where we come from, and a gentle way of caring for ourselves today.</p><Link className="text-link" href="/about">Meet NARA <ArrowRight size={14} /></Link></div></Reveal>
-      <Reveal delay={0.12}><div className="intro-image"><Image src="/images/products/nara-hair-oil-concept.jpeg" alt="NARA hair oil concept image, styled with a Sri Lankan-inspired fresco backdrop" fill sizes="(max-width: 760px) 90vw, 520px" /><span className="image-note">A supplied concept image · final product presentation pending</span></div></Reveal>
-    </section>
-
-    <FeaturedProduct product={launchProduct} />
-
-    <section className="collections section container"><SectionHeading eyebrow="Find your ritual" title="Care, in its own time" description="Two collections, thoughtfully taking shape." /><div className="grid-two"><CategoryCard title="Hair care" subtitle="Explore the collection" href="/hair-care" image="/images/products/nara-hair-oil-concept.jpeg" tone="maroon" /><CategoryCard title="Skin care" subtitle="Coming into bloom" href="/skin-care" image="/images/brand/nara-logo.jpeg" tone="forest" /></div></section>
-
+    <HeritageHero />
+    <div className="trust-ribbon"><div className="container"><TrustBadges /></div></div>
+    <FeaturedProduct />
+    <section className="collections section container"><SectionHeading eyebrow="Find your ritual" title="A little care, every day" description="Explore our hair oils, and discover what’s next for NARA." /><div className="grid-two"><Reveal><CategoryCard title="Hair care" subtitle="Hair oils · Shampoo & toner coming soon" href="/hair-care" image="/images/collections/hair-care.webp" tone="maroon" /></Reveal><Reveal delay={.1}><CategoryCard title="Skin care" subtitle="Natural soap & face serum · Coming soon" href="/skin-care" image="/images/brand/nara-logo.jpeg" tone="forest" /></Reveal></div></section>
     <IngredientsPreview />
-
-    <section className="heritage section container"><div className="heritage-image"><Image src="/images/brand/nara-logo.jpeg" alt="NARA brand mark on warm ivory paper" fill sizes="(max-width: 760px) 90vw, 520px" /></div><div className="heritage-copy"><span className="eyebrow">A little about us</span><h2>Old wisdom.<br /><em>A softer rhythm.</em></h2><p>NARA is a Sri Lankan beauty house shaped by a deep affection for the island: its living traditions, its botanical richness and the people who carry its stories forward.</p><p>We are beginning simply, building with intention, and sharing only what is ready to be known.</p><Link className="text-link" href="/about">Our story <ArrowRight size={14} /></Link></div></section>
-
-    <section className="order-section section"><div className="container"><SectionHeading eyebrow="When you’re ready" title="A simple way to order" description="A few clear steps, with a real person nearby if you need help." /><TrustBadges /><div className="order-steps"><div><span>01</span><Check size={19} /><h3>Choose your ritual</h3><p>Explore the products currently available.</p></div><div><span>02</span><MessageCircle size={19} /><h3>Ask us anything</h3><p>Our WhatsApp contact will be available once configured.</p></div><div><span>03</span><ArrowRight size={19} /><h3>Pay on delivery</h3><p>Cash on delivery is planned for Sri Lankan orders.</p></div></div></div></section>
-
-    <section className="closing-cta"><div className="container"><span className="eyebrow">The beginning of something familiar</span><h2>Let’s make room<br />for a little <em>care.</em></h2><Link className="button button-light" href="/contact">Get in touch <ArrowRight size={15} /></Link></div></section>
+    <section className="heritage-story section"><div className="container heritage"><Reveal><div className="heritage-image landscape-image"><Image src="/images/heritage/island-landscape.webp" alt="Illustrative Sri Lankan rock landscape in warm golden light, from the supplied design reference" fill sizes="(max-width: 760px) 90vw, 580px" /></div></Reveal><Reveal delay={.1}><div className="heritage-copy"><span className="eyebrow">The island, our inspiration</span><h2>Inspired by Sri Lanka’s <em>Timeless Heritage</em></h2><p>Warm earth, botanical abundance, the intricate beauty of a carved doorway. NARA’s visual world draws from the colours and textures of Sri Lanka.</p><p>Our collection brings that inspiration to an everyday ritual of care. A contemporary expression of the island we call home.</p><Link className="text-link" href="/about">Our story <ArrowRight size={14} /></Link></div></Reveal></div></section>
+    <section className="order-section section"><div className="container"><SectionHeading eyebrow="A personal touch" title="Care is a conversation" description="Discover your oil and speak with NARA about availability and delivery." /><div className="order-steps"><div><span>01</span><Package size={21} /><h3>Find your ritual</h3><p>Compare our two 30 ml oils and explore their label ingredients.</p></div><div><span>02</span><MessageCircle size={21} /><h3>Message NARA</h3><p><Link href="/contact">Ask us about current pricing and availability on WhatsApp.</Link></p></div><div><span>03</span><Banknote size={21} /><h3>Delivery, with care</h3><p>Cash on delivery available. Confirm delivery coverage and charges with us before ordering.</p></div></div></div></section>
+    <section className="closing-cta"><div className="container"><span className="eyebrow">Love Your Beauty Again</span><h2>Your ritual.<br /><em>Our island’s inspiration.</em></h2><Link className="button button-light" href="/contact">Talk to NARA <ArrowRight size={15} /></Link></div></section>
   </>;
 }

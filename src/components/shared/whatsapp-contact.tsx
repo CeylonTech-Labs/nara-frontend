@@ -2,8 +2,9 @@
 
 import { MessageCircle } from "lucide-react";
 import { getWhatsAppUrl } from "@/lib/utils/whatsapp";
+import { siteContact } from "@/lib/config/site";
 
-const whatsAppUrl = getWhatsAppUrl(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER, "Hello NARA, I would love to know more about your hair oil.");
+const whatsAppUrl = getWhatsAppUrl(siteContact.whatsappNumber, "Hello NARA, I would love to know more about your hair oil.");
 
 export function WhatsAppContact() {
   if (!whatsAppUrl) return <span className="whatsapp-unconfigured" title="Set NEXT_PUBLIC_WHATSAPP_NUMBER to enable WhatsApp contact" aria-label="WhatsApp contact is not configured"><MessageCircle size={20} /><span>WhatsApp soon</span></span>;

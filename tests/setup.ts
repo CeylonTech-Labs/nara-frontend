@@ -20,3 +20,7 @@ Object.defineProperty(globalThis, "IntersectionObserver", {
     disconnect() {}
   },
 });
+
+// jsdom has no native modal implementation; browsers supply focus trapping and Escape.
+HTMLDialogElement.prototype.showModal = function () { this.setAttribute("open", ""); };
+HTMLDialogElement.prototype.close = function () { this.removeAttribute("open"); };

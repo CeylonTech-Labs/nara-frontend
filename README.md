@@ -1,6 +1,6 @@
 # nara-frontend
 
-NARA Sri Lankan Heritage Beauty E-Commerce Frontend. This repository contains the responsive Next.js storefront foundation for NARA, a Sri Lankan beauty brand inspired by local botanical traditions and heritage.
+NARA Sri Lankan Heritage Beauty E-Commerce Frontend. This repository contains the responsive Next.js heritage storefront for NARA, a Sri Lankan beauty brand inspired by local botanical traditions and heritage.
 
 ## Prerequisites
 
@@ -33,7 +33,7 @@ Copy `.env.example` to `.env.local` and set only the values available to your en
 
 - `NEXT_PUBLIC_API_BASE_URL` — optional base URL for the future NestJS API. Blank uses local mock data.
 - `NEXT_PUBLIC_SITE_URL` — optional canonical public origin used by SEO metadata, sitemap and robots. The development fallback is `http://localhost:3000`.
-- `NEXT_PUBLIC_WHATSAPP_NUMBER` — optional seller number in international digits only, including country code. Invalid or absent values leave WhatsApp inactive.
+- `NEXT_PUBLIC_WHATSAPP_NUMBER` — optional seller number in international digits only, including country code. Defaults to the owner-supplied NARA number, 94706132303. An explicit empty or invalid override disables WhatsApp.
 
 `.env.local` is ignored by Git. Do not add credentials or database passwords to public environment variables.
 
@@ -53,7 +53,7 @@ docs/                Frontend architecture and design system
 
 ## Current limitations
 
-The catalog is local mock data. The NARA Hair Oil is listed as the initial available item, but its price, volume, ingredients and final product information are pending confirmation. Other catalog items are marked coming soon and cannot be purchased. Cart contents persist in the browser; checkout is intentionally unavailable and does not submit orders. Cash on delivery is planned. WhatsApp requires a configured seller number. Supplied product concept imagery is identified as illustrative; the heritage-inspired background is not archaeological documentation.
+The catalog is local typed data with two 30 ml oils. Ingredients and usage come from supplied label artwork; actual product photography and current selling prices remain pending. Neither oil is enabled for purchasing. Shampoo, hair toner, soap and serum are coming soon. The cart enforces explicit purchase configuration and confirmed pricing. Checkout does not submit orders. COD is presented as requested; customers must confirm coverage and charges with NARA. Heritage and botanical imagery are supplied illustrative references, not archaeological documentation.
 
 ## Future backend integration
 
@@ -62,3 +62,11 @@ The catalog is local mock data. The NARA Hair Oil is listed as the initial avail
 ## Continuous integration
 
 `.github/workflows/frontend-ci.yml` runs on pull requests and pushes to `main`. It installs with `npm ci`, then runs lint, type checking, tests and the production build. The workflow uses read-only repository permissions and does not deploy.
+
+## Brand contact details
+
+Public contact information is centralized in src/lib/config/site.ts: nara.origin3@gmail.com, WhatsApp 070 613 2303 (+94 70 613 2303), and Instagram @nara_care26. The owner-supplied Facebook page link is included on the contact page and in the footer. Do not place account passwords in frontend code or public environment variables.
+
+## Phase 03 design and assets
+
+See [Homepage design](docs/homepage-design.md) for components, colors, typography, motion, responsive behavior and purchase rules. See [Asset manifest](docs/asset-manifest.md) for source filenames, image provenance, label transcriptions and missing product information. Assets can be recreated with `node scripts/prepare-assets.mjs` when the original workspace files are available. No new dependencies are required.

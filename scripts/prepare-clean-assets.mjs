@@ -1,14 +1,13 @@
 import sharp from 'sharp';
 import fs from 'node:fs/promises';
 
-// AI-assisted silhouettes are used only as masks: bottle RGB pixels remain original.
-for (const name of ['botanical', 'rosemary']) {
+// Masks only supply transparency: bottle RGB pixels remain original. Botanical's
+// mask comes from scripts/make-bottle-mask.mjs; Rosemary's is AI-assisted.
+for (const name of ['botanical-v2', 'rosemary']) {
   const source = `public/images/products/${name}-oil.webp`;
   const { width, height } = await sharp(source).metadata();
-  const alpha = await sharp(`scripts/asset-masks/${name}.png`).greyscale().raw().toBuffer();
-  if (name === 'botanical') {
-    for (let y = 300; y < height; y++) for (let x = 0; x < 70; x++) alpha[y * width + x] = 0;
-  }
+  const alpha = await sharp(`scripts/asset-masks/${name}.png`).extractChannel(0).raw().toBuffer();
+  if (alpha.length !== width * height) throw new Error(`${name} mask does not match its source size`);
   const cutout = await sharp(source).joinChannel(alpha, { raw: { width, height, channels: 1 } }).webp({ lossless: true }).toBuffer();
   await fs.writeFile(`public/images/products/${name}-cutout.webp`, cutout);
 }
@@ -19,7 +18,7 @@ const boundaries = [[0, 340, 666, 1024], [0, 344, 688, 1024], [0, 340, 677, 1024
 for (const [i, name] of ingredients.entries()) {
   const column = i % 4, row = Math.floor(i / 4);
   const top = boundaries[column][row], bottom = boundaries[column][row + 1];
-  const inset = name === "fenugreek" ? 32 : ["almond-oil", "curry-leaves"].includes(name) ? 16 : 0;
+  const inset = name === "fenugreek" ? 32 : name === "almond-oil" ? 16 : 0;
   const cell = await sharp('scripts/asset-sources/ingredient-atlas.png')
     .extract({ left: column * 384 + inset, top, width: 384 - inset, height: bottom - top }).png().toBuffer();
   await sharp(cell)

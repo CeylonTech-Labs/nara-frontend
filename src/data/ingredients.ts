@@ -10,7 +10,6 @@ export const botanicalIngredients = [
   { name: "Rosemary", image: "rosemary" },
   { name: "Black Seed", image: "black-seed" },
   { name: "Gotukola", image: "gotukola" },
-  { name: "Curry Leaves", image: "curry-leaves" },
 ] as const;
 
 export type BotanicalIngredient = (typeof botanicalIngredients)[number];

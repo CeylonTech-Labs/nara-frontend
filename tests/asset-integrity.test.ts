@@ -3,7 +3,7 @@ import sharp from "sharp";
 import { botanicalIngredients } from "@/data/ingredients";
 
 describe("clean storefront assets", () => {
-  for (const name of ["botanical", "rosemary"]) {
+  for (const name of ["botanical-v2", "rosemary"]) {
     it(`preserves ${name} bottle pixels and removes its background`, async () => {
       const source = await sharp(`public/images/products/${name}-oil.webp`).raw().toBuffer({ resolveWithObject: true });
       const cutout = await sharp(`public/images/products/${name}-cutout.webp`).raw().toBuffer({ resolveWithObject: true });

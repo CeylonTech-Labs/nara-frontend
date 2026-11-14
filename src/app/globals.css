@@ -468,7 +468,8 @@ body:has(dialog[open]) { overflow: hidden; }
 
 .footer-bottom { flex-wrap: wrap; gap: 12px 24px; }
 .footer-credit { color: rgba(245,236,221,.8); }
-.footer-credit strong { font-weight: 500; color: var(--gold); }
+.footer-credit a { font-weight: 500; color: var(--gold); text-decoration: underline; text-decoration-color: #c4a46a66; text-underline-offset: 3px; }
+.footer-credit a:hover { text-decoration-color: var(--gold); }
 @media (min-width: 761px) and (max-width: 1024px) { .ingredient-circles { grid-template-columns: repeat(4,minmax(0,1fr)); } }
 @media (max-width: 500px) { .ingredient-circle h3 { font-size: 18px; } }
 
@@ -507,3 +508,21 @@ body:has(dialog[open]) { overflow: hidden; }
 .offer-row strong { color: var(--forest); }
 .payable-row { font-size: 14px; }
 .payable-row strong { color: var(--maroon); }
+
+/* Heritage photo credit */
+.heritage-figure { margin: 0; }
+.photo-credit { margin-top: 20px; color: var(--ink-soft); font-size: 10px; letter-spacing: .02em; }
+.photo-credit a { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 2px; }
+.photo-credit a:hover { color: var(--maroon); }
+
+/* Keep the last footer line clear of the floating WhatsApp button. */
+.footer-bottom { padding-bottom: 84px; }
+
+/* Four gallery views: image above a short label on small screens. */
+@media (max-width: 760px) {
+  .gallery-thumbnails { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .gallery-thumbnails button { flex-direction: column; justify-content: flex-start; gap: 4px; padding: 6px 4px; font-size: 9px; line-height: 1.25; text-align: center; }
+  .gallery-thumbnails img { width: 100%; height: 52px; }
+}
+.heritage-story .photo-credit { color: rgba(245, 236, 221, .66); }
+.heritage-story .photo-credit a:hover { color: var(--gold); }

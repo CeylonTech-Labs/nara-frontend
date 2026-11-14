@@ -12,7 +12,8 @@ export type Product = {
   ingredients: readonly string[] | null;
   image: string;
   imageAlt: string;
-  gallery?: readonly { src: string; alt: string }[];
+  /** Extra product images. `label` names the thumbnail; `fullSize` offers a full-size link (for label artwork). */
+  gallery?: readonly { src: string; alt: string; label?: string; fullSize?: boolean }[];
   usage?: string;
   imageryNote?: string;
   purchasable?: boolean;

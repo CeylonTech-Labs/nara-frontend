@@ -138,17 +138,21 @@ describe("NARA storefront", () => {
   });
 
   it("shows an illustration for every ingredient on the supplied botanical label", () => {
-    const names = ["Virgin Coconut Oil", "Sesame Oil", "Almond Oil", "Castor Oil", "King Coconut Oil", "Hibiscus", "Blue Water Lily", "Fenugreek", "Rosemary", "Black Seed", "Gotukola", "Curry Leaves"];
+    const names = ["Virgin Coconut Oil", "Sesame Oil", "Almond Oil", "Castor Oil", "King Coconut Oil", "Hibiscus", "Blue Water Lily", "Fenugreek", "Rosemary", "Black Seed", "Gotukola"];
     expect(products[0].ingredients).toEqual(names);
     expect(botanicalIngredients.map(ingredient => ingredient.name)).toEqual(names);
     render(<IngredientsPreview />);
     for (const name of names) expect(screen.getByRole("img", { name: name + ", botanical illustration" })).toBeInTheDocument();
-    expect(screen.getAllByRole("img")).toHaveLength(12);
+    expect(screen.getAllByRole("img")).toHaveLength(11);
+    expect(products[0].ingredients).not.toContain("Curry Leaves");
   });
 
-  it("credits CeylonTech Labs in the footer", () => {
+  it("credits and links CeylonTech Labs in the footer", () => {
     render(<SiteFooter />);
-    expect(screen.getByText("CeylonTech Labs").parentElement).toHaveTextContent("Powered by CeylonTech Labs");
+    const link = screen.getByRole("link", { name: "CeylonTech Labs" });
+    expect(link).toHaveAttribute("href", "https://ceylontechlabs.duckdns.org");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link.parentElement).toHaveTextContent("Powered by CeylonTech Labs");
   });
 
   it("falls back accessibly when a product image fails", () => {
@@ -161,9 +165,21 @@ describe("NARA storefront", () => {
   it("switches between bottle and full label artwork", async () => {
     const user = userEvent.setup();
     render(<ProductGallery product={products[1]} />);
-    await user.click(screen.getByRole("button", { name: "Show full label artwork" }));
+    await user.click(screen.getByRole("button", { name: "Show label & ingredients" }));
     expect(screen.getByRole("img", { name: /front and back label artwork/ })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View label at full size" })).toHaveAttribute("href", products[1].gallery![0].src);
+  });
+
+  it("shows the updated Botanical packaging views, with a full-size link only for the label", async () => {
+    const user = userEvent.setup();
+    render(<ProductGallery product={products[0]} />);
+    const labels = screen.getAllByRole("button").map((button) => button.textContent);
+    expect(labels).toEqual(["The bottle", "Styled", "Back of bottle", "Label & ingredients"]);
+    await user.click(screen.getByRole("button", { name: "Show styled" }));
+    expect(screen.getByRole("img", { name: /warm stone with jasmine/ })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "View label at full size" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Show label & ingredients" }));
+    expect(screen.getByRole("link", { name: "View label at full size" })).toHaveAttribute("href", "/images/products/botanical-v2-label.webp");
   });
 
   it("renders product-specific enquiries, instructions and related products", async () => {
